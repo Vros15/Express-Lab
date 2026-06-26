@@ -33,7 +33,10 @@ router.get("/", (req, res) => {
   res.json(results);
 });
 
-
+/*
+POST: Add a new location
+Name, country, and population are required fields. If any are missing, return an error.
+*/
 router.post("/", (req, res) => {
     console.log(`Post route hit!`);
     const { name, country, population } = req.body;
@@ -53,6 +56,31 @@ router.post("/", (req, res) => {
 
 });
 
+/*
+PUT: Update an existing location by ID
+Name, country, and population are optional fields. If the location is not found, return an error.
+Example:
+PUT /locations/:id
+    {name: "New Name",
+    population: 500000
+    } - Only updates the name and population, leaving country unchanged
+*/
+router.put("/:id", (req, res) => {
+    const { id } = req.params;
+    const { name, country, population } = req.body;
+    //Find the location by id
+    const location = locations.find(loc => loc.id === id);
+    if (!location) {
+      return res.status(404).json({ error: "Location not found" });
+    }
+
+    //Update the location with new data
+    if (name) location.name = name;
+    if (country) location.country = country;
+    if (population) location.population = population;
+
+    res.json(location);
+});
 
 
 //export module
