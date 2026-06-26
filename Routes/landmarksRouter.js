@@ -57,6 +57,29 @@ router.post('/', (req, res) => {
     res.status(201).json(newLandmark);
 });
 
+/*
+PUT: Update an existing landmark by ID
 
+Name, city, and yearBuilt are optional fields. If the landmark is not found, return an error.
+Example:
+PUT /landmarks/:id
+*/
+
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, city, yearBuilt } = req.body;
+    // Find the landmark by ID
+    const landmark = landmarks.find(l => l.id === id);
+    if (!landmark) {
+        return res.status(404).json({ error: 'Landmark not found' });
+    }
+
+    // Update the landmark with the provided fields
+    if (name) landmark.name = name;
+    if (city) landmark.city = city;
+    if (yearBuilt) landmark.yearBuilt = yearBuilt;
+
+    res.json(landmark);
+});
 
 module.exports = router;
