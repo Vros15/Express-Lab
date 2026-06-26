@@ -83,5 +83,25 @@ router.put("/:id", (req, res) => {
 });
 
 
+/*
+DELETE: Remove a location by ID
+Example:
+DELETE /locations/:id
+*/
+router.delete("/:id", (req, res) => {
+    const { id } = req.params;
+    const index = locations.findIndex(loc => loc.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Location not found" });
+    }
+
+    // Remove the location from the array
+    const deletedLocation = locations.splice(index, 1);
+    
+    console.log(`Deleted location:`, deletedLocation[0]);
+    res.status(200).json(deletedLocation[0]);
+});
+
+
 //export module
 module.exports = router;
