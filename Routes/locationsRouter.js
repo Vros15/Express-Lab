@@ -15,7 +15,7 @@ Example:
 GET /locations?sortBy=name&order=asc
 GET /locations?sortBy=population&order=desc
 */
-router.get("/locations", (req, res) => {
+router.get("/", (req, res) => {
   const { sortBy, order } = req.query;
 
   // Create a copy so the original array isn't modified
@@ -34,8 +34,22 @@ router.get("/locations", (req, res) => {
 });
 
 
-router.post("/locations", (req, res) => {
-
+router.post("/", (req, res) => {
+    console.log(`Post route hit!`);
+    const { name, country, population } = req.body;
+    //If any of the required fields are missing, return an error
+    if (!name || !country || !population) {
+      return res.status(400).json({ error: "Name, country, and population are required" });
+    }
+    //Add the new location to the array with a unique id
+    const newLocation = {
+      id: uuid(),
+      name,
+      country,
+      population
+    };
+    locations.push(newLocation);
+    res.status(201).json(newLocation);
 
 });
 
