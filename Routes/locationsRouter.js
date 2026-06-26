@@ -30,7 +30,10 @@ router.get("/", (req, res) => {
       results.reverse();
     }
   }
-  res.json(results);
+  res.json({
+    message: 'Locations retrieved successfully',
+    locations: results
+  });
 });
 
 /*
@@ -52,7 +55,10 @@ router.post("/", (req, res) => {
       population
     };
     locations.push(newLocation);
-    res.status(201).json(newLocation);
+    res.status(201).json({
+        message: 'Location created successfully',
+        location: newLocation
+    });
 
 });
 
@@ -79,7 +85,10 @@ router.put("/:id", (req, res) => {
     if (country) location.country = country;
     if (population) location.population = population;
 
-    res.json(location);
+    res.json({
+        message: 'Location updated successfully',
+        location
+    });
 });
 
 
@@ -99,7 +108,10 @@ router.delete("/:id", (req, res) => {
     const deletedLocation = locations.splice(index, 1);
     
     console.log(`Deleted location:`, deletedLocation[0]);
-    res.status(200).json(deletedLocation[0]);
+    res.status(200).json({
+        message: 'Location deleted successfully',
+        deletedLocation: deletedLocation[0]
+    });
 });
 
 
