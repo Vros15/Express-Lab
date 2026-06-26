@@ -32,7 +32,10 @@ router.get('/', (req, res) => {
         }
     }
 
-    res.json(results);
+    res.json({
+        message: 'Landmarks retrieved successfully',
+        landmarks: results
+    });
 });
 
 /*
@@ -54,7 +57,10 @@ router.post('/', (req, res) => {
         yearBuilt
     };
     landmarks.push(newLandmark);
-    res.status(201).json(newLandmark);
+    res.status(201).json({
+        message: 'Landmark created successfully',
+        landmark: newLandmark
+    });
 });
 
 /*
@@ -79,7 +85,28 @@ router.put('/:id', (req, res) => {
     if (city) landmark.city = city;
     if (yearBuilt) landmark.yearBuilt = yearBuilt;
 
-    res.json(landmark);
+    res.json({
+        message: 'Landmark updated successfully',
+        landmark
+    });
+});
+
+/*
+DELETE: Remove a landmark by ID
+Example:
+DELETE /landmarks/:id
+*/
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    const index = landmarks.findIndex(l => l.id === id);
+    if (index === -1) {
+        return res.status(404).json({ error: 'Landmark not found' });
+    }
+    const deletedLandmark = landmarks.splice(index, 1);
+    res.json({
+        message: 'Landmark deleted successfully',
+        deletedLandmark: deletedLandmark[0]
+    });
 });
 
 module.exports = router;
